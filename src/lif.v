@@ -38,8 +38,17 @@ module lif (
         end
     end
 
-    // next state logic with ~90% retention
-    assign next_state = current + ((state * 14) >> 4);
+    // // next state logic with ~90% retention
+    // assign next_state = current + ((state * 14) >> 4);
+
+    wire [11:0] scaled_state;  // Intermediate 12-bit result for scaling
+    assign scaled_state = (state * 14) >> 4;
+
+    wire [11:0] extended_current = {4'b0000, current}; // Extend current to 12 bits
+    wire [11:0] sum = extended_current + scaled_state; // 12-bit addition
+
+    // Saturate and truncate to 8 bits for next_state
+    assign next_state = (sum > 12'h0FF) ? 8'hFF : sum[7:0];
 
     // spiking logic with adaptive threshold
     assign spike = (state >= adapt_threshold);

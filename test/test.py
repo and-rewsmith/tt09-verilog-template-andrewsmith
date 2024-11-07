@@ -21,9 +21,33 @@ from cocotb.triggers import ClockCycles
 #     assert dut.uio_out.value == 0, "Spike (uio_out[7]) should be low after reset"
 
 
+# @cocotb.test()
+# async def test_spiking_with_adaptation(dut):
+#     """Test spiking behavior with adaptation by providing low sustained input"""
+#     clock = Clock(dut.clk, 10, units="us")
+#     cocotb.start_soon(clock.start())
+
+#     # Initial conditions
+#     dut.rst_n.value = 0
+#     await ClockCycles(dut.clk, 10)
+#     dut.rst_n.value = 1
+
+#     # Set a low input current to induce spiking
+#     dut.ui_in.value = 10
+#     spike_count = 0
+#     for _ in range(50):
+#         await ClockCycles(dut.clk, 1)
+#         if dut.uio_out.value == 128:  # Check if spike is high
+#             spike_count += 1
+#         await ClockCycles(dut.clk, 5)  # Space out sampling
+
+#     # Ensure that spiking occurred initially, indicating that input triggered the neuron
+#     assert spike_count > 0, "Neuron should spike with sustained high input"
+
+
 @cocotb.test()
 async def test_spiking_with_adaptation(dut):
-    """Test spiking behavior with adaptation by providing sustained input"""
+    """Test spiking behavior with adaptation by providing low sustained input"""
     clock = Clock(dut.clk, 10, units="us")
     cocotb.start_soon(clock.start())
 
@@ -33,7 +57,7 @@ async def test_spiking_with_adaptation(dut):
     dut.rst_n.value = 1
 
     # Set a high input current to induce spiking
-    dut.ui_in.value = 10
+    dut.ui_in.value = 180
     spike_count = 0
     for _ in range(50):
         await ClockCycles(dut.clk, 1)

@@ -1,6 +1,6 @@
 # Tiny Tapeout project information
 project:
-  title:        "TODO"      # Project title
+  title:        "3 Neuron ALIF"      # Project title
   author:       "Andrew Smith"      # Your name
   discord:      ""      # Your discord username, for communication and automatically assigning you a Tapeout role (optional)
   description:  "TODO"      # One line description of what your project does

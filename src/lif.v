@@ -9,7 +9,6 @@ module lif (
     reg [7:0]    spike_counter;     // Temporarily exposed for testing
     wire [7:0] next_state;
     reg [7:0] threshold;
-    reg [7:0] trimmed_current;
 
     always @(posedge clk) begin
         if (!reset_n) begin
@@ -23,7 +22,7 @@ module lif (
             // Adapt threshold increase upon spiking
             if (spike) begin
                 if (adapt_threshold < 170) begin
-                    adapt_threshold <= adapt_threshold + (trimmed_current >> 2); // Increment proportional to current
+                    adapt_threshold <= adapt_threshold + (state >> 2); // Increment proportional to current
                     spike_counter <= 0;  // Reset counter on spike
                 end else begin
                     spike_counter <= 0;  // Reset counter on spike
@@ -38,20 +37,12 @@ module lif (
         end
     end
 
-    // // next state logic with ~90% retention
-    // assign next_state = current + ((state * 14) >> 4);
-
     wire [11:0] scaled_state;  // Intermediate 12-bit result for scaling
     assign scaled_state = (state * 14) >> 4;
 
-    // wire [11:0] extended_current = {4'b0000, current}; // Extend current to 12 bits
     wire [11:0] sum = current + scaled_state; // 12-bit addition
     assign next_state = (sum > 12'h0FF) ? 8'hFF : sum[7:0];
 
-    // // Saturate and truncate to 8 bits for next_state
-    // assign next_state = (sum > 12'h0FF) ? 8'hFF : sum[7:0];
-
-    // spiking logic with adaptive threshold
     assign spike = (state >= adapt_threshold);
 
 endmodule

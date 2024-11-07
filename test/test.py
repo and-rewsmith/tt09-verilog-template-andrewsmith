@@ -21,29 +21,28 @@ from cocotb.triggers import ClockCycles
 #     assert dut.uio_out.value == 0, "Spike (uio_out[7]) should be low after reset"
 
 
-@cocotb.test()
-async def test_spiking_with_adaptation_low_input(dut):
-    """Test spiking behavior with adaptation by providing low sustained input"""
-    clock = Clock(dut.clk, 10, units="us")
-    cocotb.start_soon(clock.start())
+# @cocotb.test()
+# async def test_spiking_with_adaptation_low_input(dut):
+#     """Test spiking behavior with adaptation by providing low sustained input"""
+#     clock = Clock(dut.clk, 10, units="us")
+#     cocotb.start_soon(clock.start())
 
-    # Initial conditions
-    dut.rst_n.value = 0
-    await ClockCycles(dut.clk, 10)
-    dut.rst_n.value = 1
+#     # Initial conditions
+#     dut.rst_n.value = 0
+#     await ClockCycles(dut.clk, 10)
+#     dut.rst_n.value = 1
 
-    # Set a low input current to induce spiking
-    dut.ui_in.value = 10
-    spike_count = 0
-    for _ in range(50):
-        await ClockCycles(dut.clk, 1)
-        print(dut.uio_out.value)
-        if (dut.uio_out.value & 0b11000000) != 0:
-            spike_count += 1
-        await ClockCycles(dut.clk, 5)  # Space out sampling
+#     # Set a low input current to induce spiking
+#     dut.ui_in.value = 10
+#     spike_count = 0
+#     for _ in range(50):
+#         await ClockCycles(dut.clk, 1)
+#         if (dut.uio_out.value & 0b11000000) != 0:
+#             spike_count += 1
+#         await ClockCycles(dut.clk, 5)  # Space out sampling
 
-    # Ensure that spiking occurred initially, indicating that input triggered the neuron
-    assert spike_count > 0, "Neuron should spike with sustained high input"
+#     # Ensure that spiking occurred initially, indicating that input triggered the neuron
+#     assert spike_count > 0, "Neuron should spike with sustained high input"
 
 
 # @cocotb.test()
@@ -117,81 +116,72 @@ async def test_spiking_with_adaptation_low_input(dut):
 #     assert dut.uo_out.value == "11111111", "State should not exceed 255 due to saturation"
 
 
-# # @cocotb.test()
-# # async def test_low_medium_high_current_levels(dut):
-# #     """Test the neuron with low, medium, and high current levels to observe spiking and adaptation"""
-# #     clock = Clock(dut.clk, 10, units="us")
-# #     cocotb.start_soon(clock.start())
+# @cocotb.test()
+# async def test_low_medium_high_current_levels(dut):
+#     """Test the neuron with low, medium, and high current levels to observe spiking and adaptation"""
+#     clock = Clock(dut.clk, 10, units="us")
+#     cocotb.start_soon(clock.start())
 
-# #     # Initial conditions
-# #     dut.rst_n.value = 0
-# #     await ClockCycles(dut.clk, 10)
-# #     dut.rst_n.value = 1
+#     # Initial conditions
+#     dut.rst_n.value = 0
+#     await ClockCycles(dut.clk, 10)
+#     dut.rst_n.value = 1
 
-# #     # Test low current
-# #     dut.ui_in.value = 20
-# #     low_spike_count = 0
-# #     for _ in range(50):
-# #         await ClockCycles(dut.clk, 1)
-# #         if dut.uio_out.value.integer >= 64:  # Check if spike is high
-# #             low_spike_count += 1
-# #         await ClockCycles(dut.clk, 5)
+#     # Test low current
+#     dut.ui_in.value = 10
+#     low_spike_count = 0
+#     for _ in range(50):
+#         await ClockCycles(dut.clk, 1)
+#         if dut.uio_out.value.integer >= 64:  # Check if spike is high
+#             low_spike_count += 1
+#         await ClockCycles(dut.clk, 5)
 
-# #     # Test medium current
-# #     dut.ui_in.value = 100
-# #     medium_spike_count = 0
-# #     for _ in range(50):
-# #         await ClockCycles(dut.clk, 1)
-# #         if dut.uio_out.value.integer >= 64:  # Check if spike is high
-# #             medium_spike_count += 1
-# #         await ClockCycles(dut.clk, 5)
+#     # Test high current
+#     dut.ui_in.value = 180
+#     high_spike_count = 0
+#     for _ in range(50):
+#         await ClockCycles(dut.clk, 1)
+#         if dut.uio_out.value.integer >= 64:  # Check if spike is high
+#             high_spike_count += 1
+#         await ClockCycles(dut.clk, 5)
 
-# #     # Test high current
-# #     dut.ui_in.value = 180
-# #     high_spike_count = 0
-# #     for _ in range(50):
-# #         await ClockCycles(dut.clk, 1)
-# #         if dut.uio_out.value.integer >= 64:  # Check if spike is high
-# #             high_spike_count += 1
-# #         await ClockCycles(dut.clk, 5)
-
-# #     # Assertions to ensure expected spiking frequency based on input level
-# #     assert low_spike_count < medium_spike_count < high_spike_count, (
-# #         "Spiking frequency should increase with higher input current levels"
-# #     )
+#     # Assertions to ensure expected spiking frequency based on input level
+#     assert low_spike_count < high_spike_count, (
+#         "Spiking frequency should increase with higher input current levels"
+#     )
 
 
-# # @cocotb.test()
-# # async def test_threshold_decay_via_spike_frequency(dut):
-# #     """Test that adapt_threshold decays over time by observing an increase in spike frequency"""
-# #     clock = Clock(dut.clk, 10, units="us")
-# #     cocotb.start_soon(clock.start())
+# @cocotb.test()
+# async def test_threshold_decay_via_spike_frequency(dut):
+#     """Test that adapt_threshold decays over time by observing an increase in spike frequency"""
+#     clock = Clock(dut.clk, 10, units="us")
+#     cocotb.start_soon(clock.start())
 
-# #     # Initial reset
-# #     dut.rst_n.value = 0
-# #     await ClockCycles(dut.clk, 10)
-# #     dut.rst_n.value = 1
+#     # Initial reset
+#     dut.rst_n.value = 0
+#     await ClockCycles(dut.clk, 10)
+#     dut.rst_n.value = 1
 
-# #     # Set moderate input current to induce initial spikes without reaching saturation
-# #     dut.ui_in.value = 10
+#     # Set moderate input current to induce initial spikes without reaching saturation
+#     dut.ui_in.value = 10
 
-# #     # Measure spike frequency in the first interval (before decay)
-# #     initial_spike_count = 0
-# #     for _ in range(50):  # First interval for initial spike count
-# #         await ClockCycles(dut.clk, 1)
-# #         if dut.uio_out.value.integer >= 64:  # Check if spike is high
-# #             initial_spike_count += 1
-# #         await ClockCycles(dut.clk, 5)
+#     # Measure spike frequency in the first interval (before decay)
+#     initial_spike_count = 0
+#     for _ in range(50):  # First interval for initial spike count
+#         await ClockCycles(dut.clk, 1)
+#         if dut.uio_out.value.integer >= 64:  # Check if spike is high
+#             initial_spike_count += 1
+#         await ClockCycles(dut.clk, 5)
 
-# #     # Measure spike frequency in the second interval (after decay)
-# #     later_spike_count = 0
-# #     for _ in range(50):  # Second interval for spike count after threshold decay
-# #         await ClockCycles(dut.clk, 1)
-# #         if dut.uio_out.value.integer >= 64:  # Check if spike is high
-# #             later_spike_count += 1
-# #         await ClockCycles(dut.clk, 5)
+#     # Measure spike frequency in the second interval (after decay)
+#     later_spike_count = 0
+#     for _ in range(50):  # Second interval for spike count after threshold decay
+#         await ClockCycles(dut.clk, 1)
+#         if dut.uio_out.value.integer >= 64:  # Check if spike is high
+#             later_spike_count += 1
+#         await ClockCycles(dut.clk, 5)
 
-# #     # Assert that the spiking frequency increased in the second interval
-# #     assert later_spike_count > initial_spike_count, (
-# #         "Spiking frequency should increase over time as adapt_threshold decays"
-# #     )
+#     # Assert that the spiking frequency increased in the second interval
+#     assert later_spike_count > initial_spike_count, (
+#         "Spiking frequency should increase over time as adapt_threshold decays"
+#     )

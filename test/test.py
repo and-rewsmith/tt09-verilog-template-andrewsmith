@@ -10,6 +10,8 @@ async def test_reset_behavior(dut):
     clock = Clock(dut.clk, 10, units="us")
     cocotb.start_soon(clock.start())
 
+    dut.ui_in.value = 0
+
     # Apply reset
     dut.rst_n.value = 0
     await ClockCycles(dut.clk, 10)
@@ -26,6 +28,8 @@ async def test_spiking_with_adaptation_low_input(dut):
     """Test spiking behavior with adaptation by providing low sustained input"""
     clock = Clock(dut.clk, 10, units="us")
     cocotb.start_soon(clock.start())
+
+    dut.ui_in.value = 0
 
     # Initial conditions
     dut.rst_n.value = 0
@@ -51,6 +55,8 @@ async def test_spiking_with_adaptation_high_input(dut):
     clock = Clock(dut.clk, 10, units="us")
     cocotb.start_soon(clock.start())
 
+    dut.ui_in.value = 0
+
     # Initial conditions
     dut.rst_n.value = 0
     await ClockCycles(dut.clk, 10)
@@ -74,6 +80,8 @@ async def test_adaptive_threshold_decay_indirect(dut):
     """Indirectly test that adapt_threshold decays over time by observing spike activity with no input"""
     clock = Clock(dut.clk, 10, units="us")
     cocotb.start_soon(clock.start())
+
+    dut.ui_in.value = 0
 
     # Reset and initialize
     dut.rst_n.value = 0
@@ -103,6 +111,8 @@ async def test_saturation_behavior(dut):
     clock = Clock(dut.clk, 10, units="us")
     cocotb.start_soon(clock.start())
 
+    dut.ui_in.value = 0
+
     # Initial conditions
     dut.rst_n.value = 0
     await ClockCycles(dut.clk, 10)
@@ -121,6 +131,8 @@ async def test_low_medium_high_current_levels(dut):
     """Test the neuron with low, medium, and high current levels to observe spiking and adaptation"""
     clock = Clock(dut.clk, 10, units="us")
     cocotb.start_soon(clock.start())
+
+    dut.ui_in.value = 0
 
     # Initial conditions
     dut.rst_n.value = 0
@@ -156,6 +168,8 @@ async def test_threshold_decay_via_spike_frequency(dut):
     """Test that adapt_threshold decays over time by observing an increase in spike frequency"""
     clock = Clock(dut.clk, 10, units="us")
     cocotb.start_soon(clock.start())
+
+    dut.ui_in.value = 0
 
     # Initial reset
     dut.rst_n.value = 0

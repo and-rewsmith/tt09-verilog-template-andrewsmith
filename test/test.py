@@ -37,7 +37,7 @@ async def test_spiking_with_adaptation_low_input(dut):
     dut.rst_n.value = 1
 
     # Set a low input current to induce spiking
-    dut.ui_in.value = 10
+    dut.ui_in.value = 20
     spike_count = 0
     for _ in range(50):
         await ClockCycles(dut.clk, 1)

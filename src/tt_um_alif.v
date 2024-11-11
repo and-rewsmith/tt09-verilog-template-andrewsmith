@@ -19,9 +19,9 @@ module tt_um_alif (
   wire _unused = &{ena, uio_in, 1'b0};
 
   // Generate noisy variations of uio_in
-  wire [11:0] noisy_input1 = {4'b0000, ui_in} + 12'h0B;  // Add a small value as "noise"
-  wire [11:0] noisy_input2 = {4'b0000, ui_in} + 12'h14;  // Add a different small value for second "noise"
-  wire [11:0] noisy_input3 = {4'b0000, ui_in} + 12'h0A;  // Add a different small value for second "noise"
+  wire [11:0] noisy_input1 = {4'b0000, ui_in} + 12'h001;  // Add a small value as "noise"
+  wire [11:0] noisy_input2 = {4'b0000, ui_in} + 12'h002;  // Add a different small value for second "noise"
+  wire [11:0] noisy_input3 = {4'b0000, ui_in} + 12'h003;  // Add a different small value for second "noise"
 
   // Instantiate two LIF neurons with noisy inputs
   wire [7:0] state1, state2, state3;     // Internal states of the neurons
